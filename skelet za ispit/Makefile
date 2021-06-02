@@ -1,5 +1,5 @@
 parser: parser.o lexer.o
-	g++ -std=c++11 -c parser.o lexer.o -o parser
+	g++ -std=c++11 parser.o lexer.o -o parser
 
 
 

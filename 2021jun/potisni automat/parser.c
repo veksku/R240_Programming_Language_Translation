@@ -2,9 +2,9 @@
  * E -> PRINT_T T         PRINT_T OZ VAR_T STRING_T         ZZ
  * 
  * T -> VAR_T DODELA T		VAR_T STRING_T
- *			| ( T )
- * 			| VAR_T
- *			| STRING_T
+ *	| ( T )
+ * 	| VAR_T
+ *	| STRING_T
  *
  */
 

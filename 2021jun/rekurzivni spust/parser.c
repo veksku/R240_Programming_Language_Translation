@@ -1,11 +1,11 @@
 /*
  * E -> PRINT_T E         PRINT_T OZ VAR_T STRING_T         ZZ
- *			| OZ E ZZ 		
- *			| T
+ *	| OZ E ZZ 		
+ *	| T
  * 
  * T -> VAR_T DODELA T		VAR_T STRING_T
- * 			| VAR_T
- *			| STRING_T
+ * 	| VAR_T
+ *	| STRING_T
  *
  */
 
@@ -14,8 +14,8 @@
  *     	| VAR_T DODELA T
  * 
  * T -> ( T )
- * 			| VAR_T
- *			| STRING_T
+ * 	| VAR_T
+ *	| STRING_T
  *
  */
 

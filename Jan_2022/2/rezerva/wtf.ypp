@@ -1,0 +1,128 @@
+%{
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <cmath>
+#include <map>
+
+using namespace std;
+	
+#define YYDEBUG 1
+	
+	int yylex();
+
+	void yyerror(string s){
+		cerr << s << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	map<string, pair<double,string>> tablica_simbola;
+%}
+
+%union {
+	double d;
+	string *s;
+}
+
+%token br_token tekst_token if_token else_token block_token endblock_token stampaj_token cbdeljenje_token 
+%token dvojednako_token razlicito_token manje_token vece_token manjejednako_token vecejednako_token
+%token<d> num_token
+%token<s> string_token id_token
+
+%nonassoc dvojednako_token razlicito_token manje_token vece_token manjejednako_token vecejednako_token
+%left '^'
+%left '+' '-'
+%left '*' '/' cbdeljenje_token '%'
+%right UMINUS
+
+%type <d> E
+
+%%
+
+Program: Program Naredba ';' {}
+| Naredba ';' {}
+| Program Uslov {}
+| Uslov {}
+;
+
+Naredba: Inicijalizacija {}
+| Stampanje {}
+| E {}
+;
+
+
+Uslov: if_token E ':' block_token Program endblock_token {}
+| if_token E ':' block_token Program endblock_token else_token ':' block_token Program endblock_token {}
+;
+
+
+Inicijalizacija: br_token id_token {
+	tablica_simbola[*$2].first = 0;
+	delete $2;
+ }
+| br_token id_token '=' E {
+	tablica_simbola[*$2].first = $4;
+	delete $2;
+ }
+| tekst_token id_token {
+	tablica_simbola[*$2].second = "";
+	delete $2;
+ }
+| tekst_token id_token '=' string_token {
+	tablica_simbola[*$2].second = *$4;
+	delete $2;
+ }
+;
+
+Stampanje: stampaj_token Niz {}
+;
+
+Niz: id_token {
+	map<string, string>::iterator i = tablica_simbola.find(*$1);
+	if (i == tablica_simbola.end())
+		yyerror("Stampanje nepostojece promenljive");
+	cout << i->second << endl;
+ }
+| E { cout << $1 << endl; }
+| string_token { 
+	string printable = $1->substr(1, $1->size()-2);
+	cout << printable << endl; }
+;
+
+E: E '+' E { $$ = $1 + $3; }
+| '-' E %prec UMINUS { $$ = -$2; }
+| E '-' E { $$ = $1 - $3; }
+| E '*' E { $$ = $1 - $3; }
+| E cbdeljenje_token E { $$ = int($1 / $3); }
+| E '^' E { $$ = pow($1, $3); }
+| E '%' E { $$ = fmod($1, $3); }
+| E '/' E { $$ = $1 / $3; }
+| E dvojednako_token E { $$ = ($1 == $3); }
+| E razlicito_token E { $$ = ($1 != $3); }
+| E manje_token E { $$ = ($1 < $3); }
+| E vece_token E { $$ = ($1 > $3); }
+| E manjejednako_token E { $$ = ($1 <= $3); }
+| E vecejednako_token E { $$ = ($1 >= $3); }
+| '(' E ')' { $$ = $2; }
+| id_token {
+	map<string, double>::iterator i = tablica_simbola.find(*$1);
+	if (i == tablica_simbola.end())
+		yyerror("Neinicijalizovana promenljiva " + *$1);
+	$$ = i->second;
+ }
+| num_token { $$ = $1;}
+;
+%%
+
+int main(){
+	//yydebug = 1;
+	try{
+		yyparse();
+	}
+	catch (const char *s){
+		cerr << s << endl;
+		exit(EXIT_FAILURE);
+	}
+	return 0;
+}

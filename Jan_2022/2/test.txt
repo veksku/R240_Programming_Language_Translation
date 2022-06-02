@@ -2,7 +2,6 @@ broj x;
 broj y = 10;
 broj z = -2.5;
 stampaj x;
-stampaj z y;
 
 x+(y -3*z)^(z%10);
 broj w = -y // (z + 2*y) ^(1/2);
@@ -18,8 +17,5 @@ blok
 kraj_bloka
 inace:
 blok
-	stampaj "Broj je neparan"
+	stampaj "Broj je neparan";
 kraj_bloka
-
-
-stampaj z y;

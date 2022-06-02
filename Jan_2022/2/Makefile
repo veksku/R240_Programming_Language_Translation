@@ -1,5 +1,5 @@
-jezik: lex.yy.o parser.tab.o
-	g++ -Wall -o jezik lex.yy.o parser.tab.o
+2: lex.yy.o parser.tab.o
+	g++ -Wall -o 2 lex.yy.o parser.tab.o
 
 lex.yy.o: lex.yy.c parser.tab.hpp
 	g++ -Wall -c -o lex.yy.o lex.yy.c
@@ -16,4 +16,4 @@ parser.tab.cpp parser.tab.hpp: parser.ypp
 .PHONY: clean
 
 clean:
-	rm -f *.o *.tab.* jezik lex.yy.c parser.output
+	rm -rf *.yy.* *.o 2 *.tab.* *.output

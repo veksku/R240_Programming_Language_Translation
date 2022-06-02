@@ -1,72 +1,72 @@
-%option noyywrap
 %option noinput
 %option nounput
+%option noyywrap
 
 %{
-
 #include <iostream>
 #include <cstdlib>
 #include <string>
-using namespace std;
-#include "parser.tab.hpp"
 
+using namespace std;
+
+#include "parser.tab.hpp"
 
 %}
 
 %%
 broj {
-	return br_token;
+	return BROJ;
  }
 tekst {
-	return tekst_token;
+	return TEKST;
  }
 "ako je" {
-	return if_token;
+	return IF;
  }
 inace {
-	return else_token;
+	return ELSE;
  }
 blok {
-	return block_token;
+	return BLOCK;
  }
 kraj_bloka {
-	return endblock_token;
+	return ENDBLOCK;
  }
 stampaj {
-	return stampaj_token;
+	return STAMPAJ;
  }
 [a-zA-Z_][a-zA-Z0-9]* {
-	yylval.s = new string(yytext);
-	return id_token;
+	yylval.s = new string(yytext); 
+	return ID;
  }
 [0-9]+(\.[0-9]*)? {
-	yylval.d = atof(yytext);
-	return num_token;
+	yylval.d = atof(yytext); 
+	return NUM;
  }
 \"[^"]*\" {
 	yylval.s = new string(yytext);
-	return string_token;
+	return STRING;
  }
 "//" {
-	return cbdeljenje_token;
+	return CBDELJENJE;
  }
 "==" {
-	return dvojednako_token;
+	return DVOJEDNAKO;
  }
 "!=" {
-	return razlicito_token;
+	return RAZLICITO;
  }
 "<" {
-	return manje_token;
+	return *yytext;
  }
 ">" {
-	return vece_token;
+	return *yytext;
  }
 "<=" {
-	return manjejednako_token;
+	return MANJEJEDNAKO;
  }
 ">=" {
-	return vecejednako_token;
+	return VECEJEDNAKO;
  }
 [+*":()%;^/.=-] {
 	return *yytext;
